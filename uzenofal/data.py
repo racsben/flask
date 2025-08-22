@@ -1,12 +1,33 @@
-aruk = [
+from datetime import date
+
+test_users = [
     {
-        'title': 'babfozo',
-        'price': 2025
+        'username' : 'John Doe',
+        'email' : 'johndoe@example.com'
+         
+    },
+    
+    {
+        'username' : 'Zsolti Zsolti',
+        'email' : 'zsolti@example.com'
+        
+    }
+]
+
+
+test_aruk = [
+    {
+        'title' : 'babfozo',
+        'price' : 2025 ,
+        'date' : date.today(),
+        'user_id' : 1
     },
 
     {
-        'title': 'sutotal',
-        'price':  2000
-    },
+        'title' : 'sutotal',
+        'price' : 2000,
+        'date' : date.today(),
+        'user_id' : 2
+    }
 
 ]
