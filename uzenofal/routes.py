@@ -41,7 +41,7 @@ def create():
     form = NewObjectForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            current_aru = Object(title= form.title.data, price= form.price.data)
+            current_aru = Object(title=form.title.data, price=form.price.data, date=form.date.data)
             db.session.add(current_aru)
             db.session.commit()
             flash('Az áru feltöltésre került! :)', 'success')     
@@ -55,10 +55,11 @@ def register():
     if request.method == 'POST':
         if form.validate_on_submit():
             hashed_user_pswd = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-            user = User(username= form.username.data, email= form.emial.data, password=hashed_user_pswd)
+            user = User(username=form.username.data, email=form.email.data, password=hashed_user_pswd)
             db.session.add(user)
             db.session.commit()
             flash('Sikeres regisztráció. Jelentkezz be!', 'success')     
+            print(User.query.all())
             return redirect(url_for('kezdolap'))
     return render_template('register.html', title="Regisztráció", form=form) 
 
