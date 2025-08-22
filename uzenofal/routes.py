@@ -1,19 +1,9 @@
 from flask import Flask, redirect, url_for, render_template, request, flash
-from data import aruk
-from forms import NewObjectForm
-from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
-app = Flask(__name__)
-app.config['SECRET_KEY'] = '668c2abe469d88c75a881d0170c5d98a'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-db.init_app(app)
-
-class Object(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, nullable=False)
-    price = db.Column(db.Integer, nullable=True)
-
+from uzenofal import app, db
+from uzenofal.models import Object
+from uzenofal.data import aruk
+from uzenofal.forms import NewObjectForm
 
 with app.app_context():
     db.create_all()
@@ -54,6 +44,3 @@ def create():
             return redirect(url_for('kezdolap'))
     return render_template('create.html', title="Új áru", form=form) 
 
-
-if __name__ == "__main__":
-    app.run(debug=True, use_reloader=False) #Hogy újrainduljon magátol 
