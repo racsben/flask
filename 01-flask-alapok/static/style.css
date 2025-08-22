@@ -1,0 +1,9 @@
+body{
+    /* background-image: url('bg.jpg');*/
+    background-repeat: no-repeat;
+    background-position: top;
+}
+
+form{
+    width: 600px;
+}

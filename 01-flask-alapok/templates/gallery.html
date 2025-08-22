@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+    {% for aru in aruk %}
+        <div class="card mt-3" style="width: 18rem;">
+            <img src="static/babfozo.jpg" class="card-img-top" alt="Babfőző"> <!-- To-do: Ne mindig ugyanaz a kép legyen-->
+            <div class="card-body">
+                <h5 class="card-title">{{ aru.title}}</h5>
+                <p class="card-text">{{ aru.price}}</p>
+                <a href="/babfozo" class="btn btn-primary">Katt</a>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock content%}
