@@ -29,14 +29,26 @@
                         <a class="nav-link" href="{{url_for('kapcsolat')}}" >Kapcsolat</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('create') }}" >Áru hozzáadása</a>
+                        <a class="nav-link" href="{{ url_for('create')}}" >Áru hozzáadása</a>
                     </li>
                 </ul>
                 <div class="d-flex"> 
-                    <a type="button" class="btn btn-outline-secondary" href="{{ url_for('register')}}">
+                    {% if current_user.is_authenticated %}
+                        <a type="button" class="btn btn-outline-secondary" href="{{url_for('account')}}">
+                            Felhasználói fiók
+                        </a>
+                        <a type="button" class="btn btn-outline-primary ms-3" href="{{ url_for('logout')}}">
+                            Kijelentkezés
+                        </a>
+                    {% else %}
+                        <a type="button" class="btn btn-outline-secondary" href="{{ url_for('register')}}">
                         Regisztráció
-                    </a>
-                    <a type="button" class="btn btn-outline-primary ms-3" >Bejelentkezés</a>
+                        </a>
+                        <a type="button" class="btn btn-outline-primary ms-3" href="{{ url_for('login')}}" >
+                        Bejelentkezés
+                        </a>
+                    {% endif %}
+                    
                 </div>
             </div>
         </div>

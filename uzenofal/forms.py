@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,IntegerField,SubmitField, PasswordField, DateField, EmailField
+from wtforms import StringField,IntegerField,SubmitField, PasswordField, DateField, EmailField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from sqlalchemy import select
 
 from uzenofal.models import User
 
@@ -30,4 +31,10 @@ class NewUserForm(FlaskForm):
         if user:
             raise ValidationError('Ez az e-mail cím már foglalt. Adjon meg másikat!')
     
-    
+class LoginForm(FlaskForm):
+    email = StringField('E-mail', validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    remember = BooleanField('Remeber me')
+    submitlogin = SubmitField('Bejelentkezés')
+
+
