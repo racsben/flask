@@ -43,11 +43,11 @@ def create():
     form = NewObjectForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            current_aru = Object(title=form.title.data, price=form.price.data, date=form.date.data)
+            current_aru = Object(title=form.title.data,user_id=current_user.get_id(), price=form.price.data, date=form.date.data)
             db.session.add(current_aru)
             db.session.commit()
             flash('Az áru feltöltésre került! :)', 'success')     
-            return redirect(url_for('kezdolap'))
+            return redirect(url_for('galeria'))
     return render_template('create.html', title="Új áru", form=form) 
 
 
@@ -74,8 +74,8 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('kezdolap'))
             flash('Sikeres bejelentkezés')
+            return redirect(next_page) if next_page else redirect(url_for('kezdolap'))
         else:
             flash('Sikertelen bejelentkezés. Ellenőrizd az email címet és jelszót!', 'danger')
     return render_template('login.html', title="Bejelentkezés", form=form) 
