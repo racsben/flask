@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request, flash
+from flask import Flask, redirect, url_for, render_template, request, flash, abort
 from flask_login import login_user, current_user, login_required, logout_user
 
 from uzenofal import app, db, bcrypt
@@ -37,6 +37,11 @@ def kapcsolat():
 def rolam():
     return render_template('about.html', title="Rólam")
 
+@app.route("/card/<int:object_id>")
+def card(object_id):
+    current_obj = Object.query.get_or_404(object_id)
+    return render_template('card.html', title=current_obj.title, object=current_obj)
+
 @app.route('/create/new', methods=['GET', 'POST'])
 @login_required
 def create():
@@ -50,6 +55,36 @@ def create():
             return redirect(url_for('galeria'))
     return render_template('create.html', title="Új áru", form=form) 
 
+@app.route('/object/<int:object_id>/update', methods=['GET', 'POST'])
+@login_required
+def update_object(object_id):
+    current_obj = Object.query.get_or_404(object_id)
+    if current_obj.feltolto != current_user:
+        abort(403)
+    form = NewObjectForm()
+    if form.validate_on_submit():
+        current_obj.title = form.title.data
+        current_obj.price = form.price.data
+        current_obj.date = form.date.data
+        db.session.commit()
+        flash('A kurzus adatai frissítésre kerültek', 'succes')
+        return redirect(url_for('card', object_id=current_obj.id))
+    elif request.method == 'GET':
+        form.title.data = current_obj.title
+        form.price.data = current_obj.price
+        form.date.data = current_obj.date
+    return render_template('create.html', title="Kurzus frissítése", form=form, legend='Kurzus adatainak frissítése')    
+
+@app.route('/object/<int:object_id>/delete', methods=['POST'])
+@login_required
+def delete_object(object_id):
+    current_obj = Object.query.get_or_404(object_id)
+    if current_obj.feltolto != current_user:
+        abort(403)
+    db.session.delete(current_obj)
+    db.session.commit()
+    flash('A kurzus törlésre került', 'succes')
+    return redirect(url_for('galeria'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -67,7 +102,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('kedolap'))
+        return redirect(url_for('kezdolap'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -90,6 +125,3 @@ def logout():
 @login_required
 def account():
     return render_template('account.html', title='Felhasználói fiók')
-
-
-

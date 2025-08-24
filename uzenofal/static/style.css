@@ -6,4 +6,17 @@ body{
 
 form{
     width: 600px;
+    
+}
+
+.card{
+    background-color: rgb(255, 153, 0);
+}
+
+.card-link{
+    text-decoration: none;
+}
+
+.card-link>.card:hover{
+    background-color: rgb(190, 114, 0);
 }
